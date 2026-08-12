@@ -21,11 +21,7 @@ df = df.sample(3000, random_state=42)
 print(f"Using {len(df)} rows for test run")
 
 # ── 4. Split 80/20 ────────────────────────────────────────
-train_df, test_df = train_test_split(
-    df,
-    test_size=0.2,
-    random_state=42
-)
+train_df, test_df = train_test_split(df,test_size=0.2,random_state=42)
 print(f"Train: {len(train_df)} | Test: {len(test_df)}")
 
 # ── 5. Load tokenizer ─────────────────────────────────────
