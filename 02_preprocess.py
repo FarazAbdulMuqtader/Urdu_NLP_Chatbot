@@ -5,6 +5,11 @@ from datasets import load_dataset
 # ── 1. Load ───────────────────────────────────────────────
 dataset = load_dataset("Khubaib01/RomanUrdu-NLP-Sentiment-Corpus")
 df = pd.DataFrame(dataset['train'])
+original_len=len(df)
+print("Label distribution before cleaning: ")
+print(df["Label"].value_counts())
+
+print(f"Before cleaning: {len(df)} rows")
 
 print(f"Before cleaning: {len(df)} rows")
 
@@ -19,7 +24,7 @@ def clean_text(text):
     text = re.sub(r'@\w+', '', text)
     # Remove hashtag symbol but keep word
     text = re.sub(r'#', '', text)
-    # Remove emojis
+    # Remove emojis,punctuations
     text = re.sub(r'[^\w\s]', '', text)
     # Lowercase
     text = text.lower()
@@ -29,7 +34,7 @@ def clean_text(text):
 
 # ── 3. Apply cleaning ─────────────────────────────────────
 df['clean_message'] = df['message'].apply(clean_text)
-
+print(f"Duplicates:{df.duplicated(subset="clean_message").sum()}")
 # ── 4. Remove bad rows ────────────────────────────────────
 # Remove empty messages
 df = df[df['clean_message'].str.len() > 0]
@@ -41,7 +46,10 @@ df = df[df['clean_message'].str.split().str.len() >= 2]
 df = df[df['clean_message'].str.split().str.len() <= 100]
 
 print(f"After cleaning: {len(df)} rows")
-print(f"Removed: {134053 - len(df)} rows")
+print(f"Removed: {original_len - len(df)} rows")
+
+print("Label distribution after cleaning: ")
+print(df["Label"].value_counts())
 
 # ── 5. Preview ────────────────────────────────────────────
 print("\n=== BEFORE vs AFTER ===")
