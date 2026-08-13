@@ -7,7 +7,7 @@ dataset = load_dataset("Khubaib01/RomanUrdu-NLP-Sentiment-Corpus")
 df = pd.DataFrame(dataset['train'])
 original_len=len(df)
 print("Label distribution before cleaning: ")
-print(df["Label"].value_counts())
+print(df["label"].value_counts())
 
 print(f"Before cleaning: {len(df)} rows")
 
@@ -49,7 +49,7 @@ print(f"After cleaning: {len(df)} rows")
 print(f"Removed: {original_len - len(df)} rows")
 
 print("Label distribution after cleaning: ")
-print(df["Label"].value_counts())
+print(df["label"].value_counts())
 
 # ── 5. Preview ────────────────────────────────────────────
 print("\n=== BEFORE vs AFTER ===")
