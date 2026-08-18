@@ -191,3 +191,7 @@ print(classification_report(
     all_predictions,
     target_names=label_names
 ))
+# ── Save the trained model ────────────────────────────────
+model.save_pretrained('./trained_model')
+tokenizer.save_pretrained('./trained_model')
+print("\n✅ Model saved to ./trained_model")
