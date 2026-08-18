@@ -31,10 +31,31 @@ def predict_sentiment(text):
         outputs = model(input_ids=input_ids, attention_mask=attention_mask)
         logits = outputs.logits
 
-    # Convert raw scores to probabilities
     probs = torch.softmax(logits, dim=1).squeeze()
     predicted_id = torch.argmax(probs).item()
     predicted_label = label_names[predicted_id]
+    confidence = probs[predicted_id].item()
+
+    return predicted_label, confidence, probs
+
+# ── 4. Test on fixed example sentences ──────────────────────
+test_sentences = [
+    "ye movie bohut acha tha",
+    "mujhe bilkul pasand nahi aya",
+    "kal market gaya tha",
+    "bohut bura din tha aj",
+    "chalo choro is baat ko",
+    "wah kya baat hai zabardast",
+]
+
+print("=== Roman Urdu Sentiment Demo ===\n")
+
+for sentence in test_sentences:
+    label, confidence, probs = predict_sentiment(sentence)
+    print(f"Text       : {sentence}")
+    print(f"Prediction : {label} ({confidence*100:.1f}% confidence)")
+    print(f"All scores : " + ", ".join(f"{n}: {p.item()*100:.1f}%" for n, p in zip(label_names, probs)))
+    print()    predicted_label = label_names[predicted_id]
     confidence = probs[predicted_id].item()
 
     return predicted_label, confidence, probs
