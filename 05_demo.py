@@ -24,7 +24,7 @@ def predict_sentiment(text):
         max_length=128,
         return_tensors='pt'
     )
-    input_ids      = encoding['input_ids'].to(device)
+    input_ids = encoding['input_ids'].to(device)
     attention_mask = encoding['attention_mask'].to(device)
 
     with torch.no_grad():
@@ -54,32 +54,6 @@ for sentence in test_sentences:
     label, confidence, probs = predict_sentiment(sentence)
     print(f"Text       : {sentence}")
     print(f"Prediction : {label} ({confidence*100:.1f}% confidence)")
-    print(f"All scores : " + ", ".join(f"{n}: {p.item()*100:.1f}%" for n, p in zip(label_names, probs)))
-    print()    predicted_label = label_names[predicted_id]
-    confidence = probs[predicted_id].item()
-
-    return predicted_label, confidence, probs
-
-# ── 4. Interactive loop ──────────────────────────────────────
-print("=== Roman Urdu Sentiment Demo ===")
-print("Type a sentence to check its sentiment. Type 'quit' to exit.\n")
-
-while True:
-    user_input = input("Enter text: ")
-
-    if user_input.lower() == 'quit':
-        print("Exiting demo.")
-        break
-
-    if not user_input.strip():
-        print("Please enter some text.\n")
-        continue
-
-    label, confidence, probs = predict_sentiment(user_input)
-
-    print(f"\nPrediction : {label}")
-    print(f"Confidence : {confidence*100:.1f}%")
-    print("All scores :")
-    for name, p in zip(label_names, probs):
-        print(f"  {name}: {p.item()*100:.1f}%")
+    score_line = ", ".join(f"{n}: {p.item()*100:.1f}%" for n, p in zip(label_names, probs))
+    print(f"All scores : {score_line}")
     print()
